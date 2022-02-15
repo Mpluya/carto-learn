@@ -1,0 +1,22 @@
+apiVersion: serving.knative.dev/v1
+kind: Service
+metadata:
+  name: dev
+  labels:
+    app.kubernetes.io/part-of: hello-world
+    carto.run/workload-name: dev
+    app.kubernetes.io/component: run
+spec:
+  template:
+    metadata:
+      annotations:
+        autoscaling.knative.dev/minScale: '1'
+    spec:
+      containers:
+        - name: workload
+          image: harbor-repo.vmware.com/tapsme/cartographer-dev@sha256:5afdbd7a992e7a7ac5952520a97e63724c5fba8f9df8fe66b961b24d0025839f
+          securityContext:
+            runAsUser: 1000
+      imagePullSecrets:
+        - name: registry-credentials
+
